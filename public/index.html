@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bomberman 4x4 Online</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+            position: relative; /* Para posicionar os HUDs */
+            overflow: hidden; /* Evita barras de rolagem */
+        }
+        #game-container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+        }
+        canvas {
+            border: 2px solid white;
+            display: block; /* Remove margens indesejadas */
+        }
+        canvas:focus {
+            border: 2px solid yellow;
+        }
+        #menu {
+            display: block;
+        }
+        #game, #game-over {
+            display: none;
+        }
+        .player-slot {
+            margin: 20px 0;
+            font-size: 24px;
+        }
+        input {
+            font-size: 18px;
+            padding: 5px;
+            margin: 5px;
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        /* Estilo dos HUDs dos jogadores */
+        .player-hud {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 2px solid white;
+            border-radius: 10px;
+            padding: 10px;
+            width: 150px;
+            text-align: left;
+            font-size: 14px;
+            color: white;
+            display: none; /* Escondido por padrão */
+        }
+        .player-hud p {
+            margin: 5px 0;
+        }
+        #player1-hud {
+            top: -80px; /* Acima do canvas */
+            left: 0;
+            border-color: red;
+        }
+        #player2-hud {
+            top: -80px; /* Acima do canvas */
+            right: 0;
+            border-color: green;
+        }
+        #player3-hud {
+            bottom: -80px; /* Abaixo do canvas */
+            left: 0;
+            border-color: blue;
+        }
+        #player4-hud {
+            bottom: -80px; /* Abaixo do canvas */
+            right: 0;
+            border-color: yellow;
+        }
+        @media (max-width: 768px) {
+            .player-hud {
+                width: 120px;
+                font-size: 12px;
+            }
+            #player1-hud, #player2-hud {
+                top: -60px;
+            }
+            #player3-hud, #player4-hud {
+                bottom: -60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="menu">
+        <h1>Bomberman Royale</h1>
+        <div id="player-slots">
+            <div class="player-slot" id="player-1">Player 1: Aguardando</div>
+            <div class="player-slot" id="player-2">Player 2: Aguardando</div>
+            <div class="player-slot" id="player-3">Player 3: Aguardando</div>
+            <div class="player-slot" id="player-4">Player 4: Aguardando</div>
+        </div>
+        <input type="text" id="player-name" placeholder="Digite seu nome" maxlength="10">
+        <button onclick="choosePlayer(1)">Player 1</button>
+        <button onclick="choosePlayer(2)">Player 2</button>
+        <button onclick="choosePlayer(3)">Player 3</button>
+        <button onclick="choosePlayer(4)">Player 4</button>
+        <br>
+        <button onclick="startGame()">Iniciar Jogo (≥2 jogadores)</button>
+        <p>Escolha um jogador, digite seu nome e clique no botão correspondente para confirmar.</p>
+    </div>
+    <div id="game">
+        <div id="game-container">
+            <canvas id="game-canvas" width="600" height="600"></canvas>
+            <div id="player1-hud" class="player-hud"></div>
+            <div id="player2-hud" class="player-hud"></div>
+            <div id="player3-hud" class="player-hud"></div>
+            <div id="player4-hud" class="player-hud"></div>
+        </div>
+    </div>
+    <div id="game-over">
+        <h1 id="winner-text"></h1>
+        <button onclick="restartGame()">Reiniciar</button>
+        <button onclick="exitGame()">Sair</button>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
